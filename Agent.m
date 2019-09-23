@@ -62,12 +62,16 @@ classdef Agent < handle
         end
 
         % Visualization
-        function visualizeAgentPosition2D(this)
-            scatter(this.position(1,1), this.position(2,1), 'k');
+        function visualizeAgentPosition2D(this, symbol)
+            scatter(this.position(1,1), this.position(2,1), symbol);
             hold on
         end
         function visualizeAgentTrajectory2D(this)
             plot(this.viz_position(1,:), this.viz_position(2,:));
+            hold on
+        end
+        function visualizeAgentPosition3D(this, symbol)
+            scatter3(this.position(1,1), this.position(2,1), this.position(3,1), symbol);
             hold on
         end
     end
