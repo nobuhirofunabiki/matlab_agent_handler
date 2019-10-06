@@ -20,6 +20,15 @@ classdef Agent < handle
             obj.viz_position = zeros(numel(args.position), args.memory_size);
             obj.viz_position(:,1) = args.position;
         end
+
+        function propagatePosition(this, control_input, delta_t, dynamics)
+            Ac = dynamics.getSystemMatrix;
+            Bc = dynamics.getInputMatrix;
+            sigma = dynamics.getDisturbance;
+            x = rungeKutta4Position(this.position, this.velocity, control_input, delta_t, Ac, Bc, sigma);
+            this.position = x(1:3,:);
+            this.velocity = x(4:6,:);
+        end
         
         % Get functions
         function obj = getInterAgentsDistance(this1, this2)
