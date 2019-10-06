@@ -10,10 +10,10 @@ classdef AgentEstimate < Agent
             obj@Agent(args);
 
             for itr = 1:numel(args.position)
-                this.covmat_pos_vel(itr,itr) = args_est.sigma_position^2;
+                obj.covmat_pos_vel(itr,itr) = args_est.sigma_position^2;
             end
             for itr = numel(args.position)+1:numel(args.position)+numel(args.velocity)
-                this.covmat_pos_vel(itr,itr) = args_est.sigma_velocity^2;
+                obj.covmat_pos_vel(itr,itr) = args_est.sigma_velocity^2;
             end
             obj.pre_position = obj.position;
         end
@@ -30,6 +30,10 @@ classdef AgentEstimate < Agent
             this.velocity = (this.position - this.pre_position)/delta_time;
         end
 
+        % Set functions
+        function setStateCovariancePositionVelocity(this, arg_cov_mat)
+            this.covmat_pos_vel = arg_cov_mat;
+        end
         function setIsotropicStateCovariance(this, sigma_pos, sigma_vel)
             for itr = 1:3
                 this.covmat_pos_vel(itr,itr) = sigma_pos^2;
@@ -38,10 +42,13 @@ classdef AgentEstimate < Agent
                 this.covmat_pos_vel(itr,itr) = sigma_vel^2;
             end
         end
-
         function setPreviousPosition(this)
             this.pre_position = this.position;
         end
 
+        % Get functions
+        function output = getStateCovariancePositionVelocity(this)
+            output = this.covmat_pos_vel;
+        end
     end
 end
