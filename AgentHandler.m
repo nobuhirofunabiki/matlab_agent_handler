@@ -1,4 +1,4 @@
-classdef Agent < handle
+classdef AgentHandler < handle
     properties (SetAccess = protected)
         id
         position
@@ -10,7 +10,7 @@ classdef Agent < handle
     end
 
     methods
-        function obj = Agent(args)
+        function obj = AgentHandler(args)
             obj.id = args.id;
             obj.position = args.position;
             obj.velocity = args.velocity;

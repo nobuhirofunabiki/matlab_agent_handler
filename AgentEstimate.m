@@ -1,4 +1,4 @@
-classdef AgentEstimate < Agent
+classdef AgentEstimate < AgentHandler
     properties (SetAccess = private)
         covmat_pos_vel      % position and velocity 
         covmat_attitude     % quaternion and angular velocity
@@ -7,7 +7,7 @@ classdef AgentEstimate < Agent
 
     methods
         function obj = AgentEstimate(args, args_est)
-            obj@Agent(args);
+            obj@AgentHandler(args);
 
             for itr = 1:numel(args.position)
                 obj.covmat_pos_vel(itr,itr) = args_est.sigma_position^2;
