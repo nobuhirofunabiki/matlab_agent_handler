@@ -5,8 +5,6 @@ classdef AgentHandler < handle
         velocity
         attitude
         angular_velocity
-
-        viz_position
     end
 
     methods
@@ -16,9 +14,6 @@ classdef AgentHandler < handle
             obj.velocity = args.velocity;
             % obj.attitude = args.attitude;
             % obj.angular_velocity = args.angular_velocity;
-
-            obj.viz_position = zeros(numel(args.position), args.memory_size);
-            obj.viz_position(:,1) = args.position;
         end
 
         function propagatePosition(this, control_input, delta_t, dynamics)
@@ -65,23 +60,6 @@ classdef AgentHandler < handle
             dim_vel = numel(this.velocity);
             this.position = arg_posvel(1:dim_pos,1);
             this.velocity = arg_posvel(dim_pos+1:dim_pos+dim_vel,1);
-        end
-        function setVizPosition(this, mem_id)
-            this.viz_position(:,mem_id) = this.position;
-        end
-
-        % Visualization
-        function visualizeAgentPosition2D(this, symbol)
-            scatter(this.position(1,1), this.position(2,1), symbol);
-            hold on
-        end
-        function visualizeAgentTrajectory2D(this)
-            plot(this.viz_position(1,:), this.viz_position(2,:));
-            hold on
-        end
-        function visualizeAgentPosition3D(this, symbol)
-            scatter3(this.position(1,1), this.position(2,1), this.position(3,1), symbol);
-            hold on
         end
     end
 end
