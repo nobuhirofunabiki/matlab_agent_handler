@@ -4,7 +4,7 @@ classdef TestAgentEstimate < matlab.unittest.TestCase
     end
 
     methods (TestMethodSetup)
-        function createAgentEstimate(testCase)
+        function createAgentHandlerEstimate(testCase)
             args.id = 'test';
             args.position = [1; 2; 3];
             args.velocity = [0.1; 0.2; 0.3];
@@ -13,7 +13,7 @@ classdef TestAgentEstimate < matlab.unittest.TestCase
             % args.angular_velocity = [0; 0; 0];
             args_est.sigma_position = 1.0;
             args_est.sigma_velocity = 1.0;
-            testCase.agent_estimate_ = AgentEstimate(args, args_est);
+            testCase.agent_estimate_ = AgentHandlerEstimate(args, args_est);
         end
     end
 

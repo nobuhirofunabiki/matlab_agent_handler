@@ -1,6 +1,6 @@
 classdef EstimatedStatesManager
     properties (SetAccess = protected)
-        agents_est % Object array of AgentEstimate class
+        agents_est % Object array of AgentHnadlerEstimate class
         num_agents
         num_dims
     end
@@ -8,18 +8,16 @@ classdef EstimatedStatesManager
         function obj = EstimatedStatesManager(args)
             num_agents = args.num_agents;
             num_dims = args.num_dimensions;
-            memory_size = args.memory_size;
             sigma_position = args.sigma_position;
             sigma_velocity = args.sigma_velocity;
 
             args_est1.position = zeros(num_dims,1);
             args_est1.velocity = zeros(num_dims,1);
-            args_est1.memory_size = memory_size;
             args_est2.sigma_position = sigma_position;
             args_est2.sigma_velocity = sigma_velocity;
             for iAgents = 1:num_agents
                 args_est1.id = iAgents;
-                agents_est(iAgents) = AgentEstimate(args_est1, args_est2);
+                agents_est(iAgents) = AgentHandlerEstimate(args_est1, args_est2);
             end
             obj.num_agents = num_agents;
             obj.num_dims = num_dims;
@@ -49,6 +47,15 @@ classdef EstimatedStatesManager
         end
 
         % Getters
+        function output = getStateVectorOfAllAgents(this)
+            num_vars = 2*this.num_dims;
+            output = zeros(num_vars*this.num_agents,1);
+            for iAgents = 1:this.num_agents
+                posvel = this.getAgentPositionVelocity(iAgents);
+                output(num_vars*(iAgents-1)+1:num_vars*iAgents, 1) = posvel;
+            end
+        end
+
         function output = getAgentPositionVelocity(this, iAgents)
             position = this.getAgentPosition(iAgents);
             velocity = this.getAgentVelocity(iAgents);

@@ -1,6 +1,7 @@
 classdef AgentHandler < handle
     properties (SetAccess = protected)
         id
+        dimension
         position
         velocity
         attitude
@@ -12,6 +13,7 @@ classdef AgentHandler < handle
             obj.id = args.id;
             obj.position = args.position;
             obj.velocity = args.velocity;
+            obj.dimension = numel(args.position);
             % obj.attitude = args.attitude;
             % obj.angular_velocity = args.angular_velocity;
         end

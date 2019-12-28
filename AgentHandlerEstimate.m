@@ -1,4 +1,4 @@
-classdef AgentEstimate < AgentHandler
+classdef AgentHandlerEstimate < AgentHandler
     properties (SetAccess = private)
         covmat_pos_vel      % position and velocity 
         covmat_attitude     % quaternion and angular velocity
@@ -6,14 +6,15 @@ classdef AgentEstimate < AgentHandler
     end
 
     methods
-        function obj = AgentEstimate(args, args_est)
+        function obj = AgentHandlerEstimate(args, args_est)
             obj@AgentHandler(args);
+            dimension = obj.dimension;
 
-            for itr = 1:numel(args.position)
-                obj.covmat_pos_vel(itr,itr) = args_est.sigma_position^2;
+            for iDims = 1:dimension
+                obj.covmat_pos_vel(iDims,iDims) = args_est.sigma_position^2;
             end
-            for itr = numel(args.position)+1:numel(args.position)+numel(args.velocity)
-                obj.covmat_pos_vel(itr,itr) = args_est.sigma_velocity^2;
+            for iDims = dimension+1:2*dimension
+                obj.covmat_pos_vel(iDims,iDims) = args_est.sigma_velocity^2;
             end
             obj.pre_position = obj.position;
         end
@@ -35,11 +36,12 @@ classdef AgentEstimate < AgentHandler
             this.covmat_pos_vel = arg_cov_mat;
         end
         function setIsotropicStateCovariance(this, sigma_pos, sigma_vel)
-            for itr = 1:3
-                this.covmat_pos_vel(itr,itr) = sigma_pos^2;
+            dimension = this.dimension;
+            for iDims = 1:dimension
+                this.covmat_pos_vel(iDims,iDims) = sigma_pos^2;
             end
-            for itr = 4:6
-                this.covmat_pos_vel(itr,itr) = sigma_vel^2;
+            for iDims = dimension+1:2*dimension
+                this.covmat_pos_vel(iDims,iDims) = sigma_vel^2;
             end
         end
         function setPreviousPosition(this)
